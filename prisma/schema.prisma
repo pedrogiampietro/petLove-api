@@ -9,19 +9,49 @@ datasource db {
 
 model User {
   id        String    @id @default(uuid())
-  username  String    @unique
   name      String
   email     String    @unique
   password  String
-  phone     String
-  ramal     String
-  sector    String
+  phone     String?
   createdAt DateTime? @default(now())
   updatedAt DateTime? @default(now())
 
-  Ticket        Ticket[]
   RefreshTokens RefreshToken[]
-  Equipaments   Equipaments[]
+  Animal        Animal[]
+}
+
+model Animal {
+  id        String    @id @default(uuid())
+  name      String
+  age       String?
+  size      String?
+  breed     String?
+  sex       String?
+  color     String?
+  image     String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+
+  owner     User       @relation(fields: [ownerId], references: [id])
+  ownerId   String
+  jobOffers JobOffer[]
+}
+
+model JobOffer {
+  id           String    @id @default(uuid())
+  name         String
+  animal       Animal    @relation(fields: [animalId], references: [id])
+  animalId     String
+  offerType    OfferType
+  pricePerHour Float?
+  pricePerDay  Float?
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @default(now())
+}
+
+enum OfferType {
+  WALKING
+  DAYCARE
 }
 
 model RefreshToken {

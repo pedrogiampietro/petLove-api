@@ -1,5 +1,5 @@
 {
-	"name": "ihmef-backend",
+	"name": "petlover-api",
 	"version": "1.0.0",
 	"description": "",
 	"main": "src/server.js",
@@ -28,7 +28,7 @@
 		"@types/express": "^4.17.14",
 		"@types/jsonwebtoken": "^8.5.9",
 		"prettier": "^2.8.0",
-		"prisma": "^4.5.0",
+		"prisma": "^4.11.0",
 		"ts-node-dev": "^2.0.0",
 		"typescript": "^4.8.4"
 	}

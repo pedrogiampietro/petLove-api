@@ -1,8 +1,8 @@
-version: "3.9"
+version: '3.9'
 
 services:
   postgres:
-    container_name: ihmef_database
+    container_name: petlover-api
     image: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -11,7 +11,7 @@ services:
     volumes:
       - pgdata:/data/postgres
     ports:
-      - "5432:5432"
+      - '5432:5432'
     networks:
       - postgres
     restart: unless-stopped

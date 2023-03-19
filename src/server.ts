@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 
 import authController from './controllers/AuthController';
+import jobController from './controllers/JobController';
+import animalController from './controllers/AnimalController';
+import userController from './controllers/UserController';
 
 const app = express();
 
@@ -25,6 +28,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/authenticate', authController);
+app.use('/job', jobController);
+app.use('/animal', animalController);
+app.use('/user', userController);
 
 app.get('/', (req, res) => {
 	return res.json({ status: 'OK', data: new Date().toLocaleString() });
