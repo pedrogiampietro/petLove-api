@@ -1,15 +1,10 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 const router = express.Router();
-
-interface CreateUserInput {
-	name: string;
-	email: string;
-	password: string;
-	phone?: string;
-}
+const saltRounds = 10;
 
 interface UpdateUserInput {
 	name?: string;
@@ -72,6 +67,28 @@ router.put('/:id', async (req, res) => {
 	const { id } = req.params;
 	const { name, email, password, phone }: UpdateUserInput = req.body;
 
+	if (!name || !email || !password) {
+		return res.status(400).json({
+			error: true,
+			message:
+				'Nome, e-mail e senha são obrigatórios para atualizar o usuário.',
+		});
+	}
+
+	const findUser = await prisma.user.findFirst({
+		where: {
+			email: email,
+		},
+	});
+
+	if (!findUser) {
+		return res
+			.status(404)
+			.json({ message: 'Usuário não encontrado no sistema.' });
+	}
+
+	const hashedPassword = bcrypt.hashSync(password, saltRounds);
+
 	try {
 		const user = await prisma.user.update({
 			where: {
@@ -80,7 +97,7 @@ router.put('/:id', async (req, res) => {
 			data: {
 				name,
 				email,
-				password,
+				password: hashedPassword,
 				phone,
 			},
 		});

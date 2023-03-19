@@ -55,13 +55,17 @@ router.post('/sign-in', async (request, response) => {
 		});
 
 		if (!findUser) {
-			return response.status(404).json('Usuário não encontrado no sistema.');
+			return response
+				.status(404)
+				.json({ message: 'Usuário não encontrado no sistema.' });
 		}
 
 		const validPassword = await bcrypt.compare(password, findUser.password);
 
 		if (!validPassword)
-			return response.status(400).json('Password incorreto, tente novamente.');
+			return response
+				.status(400)
+				.json({ message: 'Password incorreto, tente novamente.' });
 
 		const token = generateAccessToken(findUser.id);
 		const refreshToken = generateRefreshToken(findUser.id, token);

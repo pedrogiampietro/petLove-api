@@ -39,14 +39,26 @@ model Animal {
 
 model JobOffer {
   id           String    @id @default(uuid())
-  name         String
   animal       Animal    @relation(fields: [animalId], references: [id])
   animalId     String
   offerType    OfferType
   pricePerHour Float?
   pricePerDay  Float?
+  location     String?
   createdAt    DateTime? @default(now())
   updatedAt    DateTime? @default(now())
+
+  availability Availability[]
+}
+
+model Availability {
+  id         String    @id @default(uuid())
+  jobOffer   JobOffer  @relation(fields: [jobOfferId], references: [id])
+  jobOfferId String
+  startDate  Json
+  endDate    Json
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @default(now())
 }
 
 enum OfferType {
